@@ -23,10 +23,11 @@ export const Navbar=(props: Props) => {
         {
           props.tabs.map((tab: TabType)=>{
             return(
-              <Tab id={tab.id} link={tab.link} setSelectedTabId={(id: string)=>props.liftSelectedTabId(id)} selected={tab.id === props.selectedTabId} name={tab.name} img={tab.img} />
+              <li style={{textDecoration: "none", width: "100%", listStyle: "none"}} key={tab.id}>
+                <Tab id={tab.id} link={tab.link} setSelectedTabId={(id: string)=>props.liftSelectedTabId(id)} selected={tab.id === props.selectedTabId} name={tab.name} img={tab.img} />
+                </li>
             )
           })
-
         }
       </div>
 

@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useContext} from 'react'
 import { BLACK, centerItems, DIRTYWHITE, SKYBLUE } from '../constants'
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -6,12 +6,13 @@ import { Dropdown } from 'primereact/dropdown';
 import { categoriesOptions } from '../data/categories';
 import { Calendar } from 'primereact/calendar';
 import { PrioElement } from '../components/PrioElement/PrioElement';
-import { PRIORITY } from '../types/PriorityEnum';
 import { PriobuttonType } from '../types/PrioButtonType';
 import { priorityButtonArray } from '../data/PrioButtons';
 import { Button } from 'primereact/button';
+import { DataContext } from '../Provider/DataProvider';
 
 export const AddTaskView = () => {
+  const dataContext = useContext(DataContext)
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [categories, setCategories] = useState<any>(undefined);
@@ -19,7 +20,7 @@ export const AddTaskView = () => {
   const [selectedPriorityEnumId, setSelectedPriorityEnumId] = useState<string|undefined>(undefined);
   const [priorityArray, setPriorityArray] = useState<PriobuttonType[]>(priorityButtonArray);
 
-  const calculateColorForCategory = (category: string)=>{
+ const calculateColorForCategory = (category: string)=>{
     if(category === "BUSINESS"){
       return "#52c9ff";
     }else if(category === "PRIVATE"){
@@ -42,6 +43,18 @@ export const AddTaskView = () => {
     return <span>{props.placeholder}</span>;
 };
 
+const returnPriorityValue=()=>{
+  let returnValue;
+  priorityButtonArray.forEach((priorityElement: any)=>{
+    if(priorityElement.id === selectedPriorityEnumId){
+      console.log("priority value: ", priorityElement.name);
+      
+       returnValue = priorityElement.name;
+    }
+  })
+  return returnValue;
+}
+
 const categoryOptionTemplate = (option: any) => {
     return (
         <div className="flex align-items-center justify-content-between" style={{width: "90%"}}>
@@ -50,6 +63,22 @@ const categoryOptionTemplate = (option: any) => {
         </div>
     );
 };
+
+const postTodo = ()=>{
+  console.log("date: ", date.getTime());
+  
+  let todo = {
+    name: title,
+    description: description,
+    created_at: (new Date().getTime()).toString(),
+    category: categories,
+    priority: returnPriorityValue(),
+    development_state: "TODO",
+    expire_date: date.getTime()
+  }
+
+  dataContext.postTodoPerUser(todo)
+}
 
   return (
     <div className={centerItems} style={{width: "100%", height: "100%"}}>
@@ -93,7 +122,7 @@ const categoryOptionTemplate = (option: any) => {
                   </div>
                     <div className="flex justify-content-center" style={{width: "25vw"}}>
                         <Button style={{marginRight: "8px", backgroundColor: DIRTYWHITE, color: "black", border: "1px solid black"}}>Clear</Button>
-                        <Button style={{marginLeft: "8px", backgroundColor: BLACK, border: "1px solid"+ BLACK}}>Create</Button>
+                        <Button onClick={postTodo} style={{marginLeft: "8px", backgroundColor: BLACK, border: "1px solid"+ BLACK}}>Create</Button>
                     </div>
             
                 </div>

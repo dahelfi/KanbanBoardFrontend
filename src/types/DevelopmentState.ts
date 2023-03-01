@@ -1,0 +1,6 @@
+export enum DEVELOPMENTSTATE {
+    TODO = "TODO",
+    INPROGRESS = "INPROGRESS",
+    VALIDATION = "VALIDATION",
+    DONE = "DONE"
+}
