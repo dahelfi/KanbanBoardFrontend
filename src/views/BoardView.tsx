@@ -15,7 +15,7 @@ export const BoardView = (props: Props) => {
   const [selectedTabId, setSelectedTabId] = useState<string>("a2f5hT")
 
   return (
-    <div className='flex' style={{width: "100%", height: "100%", backgroundColor: DIRTYWHITE}}>
+    <div className='flex' style={{width: "100%", height: "100%", backgroundColor: DIRTYWHITE, }}>
       <Navbar liftSelectedTabId={(id: string)=>setSelectedTabId(id)} selectedTabId={selectedTabId} tabs={props.tabs}/>
       <div className='flex flex-column' style={{width: "90vw"}}>
         <Header/>

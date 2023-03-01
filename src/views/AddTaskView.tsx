@@ -10,8 +10,11 @@ import { PriobuttonType } from '../types/PrioButtonType';
 import { priorityButtonArray } from '../data/PrioButtons';
 import { Button } from 'primereact/button';
 import { DataContext } from '../Provider/DataProvider';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { useNavigate } from 'react-router-dom';
 
 export const AddTaskView = () => {
+  let navigate = useNavigate();
   const dataContext = useContext(DataContext)
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -78,9 +81,18 @@ const postTodo = ()=>{
   }
 
   dataContext.postTodoPerUser(todo)
+  navigate("canban/");
 }
 
   return (
+    <>
+      {dataContext.loading.loading ? 
+    <div className={centerItems} style={{position: "absolute", left: "0px", right: "0px", top: "0px", bottom: "0px", backgroundColor: "rgba(0,0,0,0.5)", zIndex: "1000"}}>
+      <div className={centerItems} style={{width: "100vw", height: "100vh"}}>
+      <ProgressSpinner/>
+      </div>
+    
+    </div>: null}
     <div className={centerItems} style={{width: "100%", height: "100%"}}>
       <div style={{width: "85%", height: "90%"}} className="flex flex-column">
         <h1>Add Task</h1>
@@ -112,7 +124,7 @@ const postTodo = ()=>{
                   </div>
               
                     <div>
-                      <h4>Prio</h4>
+                      <h4>Priority</h4>
                         <div style={{width: "25vw"}}>
                           <PrioElement priorityArray={priorityArray} selectedPriorityEnumId ={selectedPriorityEnumId} liftSelectedPriorityEnum1={(priorityEnumId: string)=>{setSelectedPriorityEnumId(priorityEnumId)}}  />
                         </div>
@@ -122,7 +134,8 @@ const postTodo = ()=>{
                   </div>
                     <div className="flex justify-content-center" style={{width: "25vw"}}>
                         <Button style={{marginRight: "8px", backgroundColor: DIRTYWHITE, color: "black", border: "1px solid black"}}>Clear</Button>
-                        <Button onClick={postTodo} style={{marginLeft: "8px", backgroundColor: BLACK, border: "1px solid"+ BLACK}}>Create</Button>
+                        <Button disabled={!(title.length > 3 && description.length > 3 && categories !== undefined && date !== null && selectedPriorityEnumId !== undefined)} 
+                        onClick={postTodo} style={{marginLeft: "8px", backgroundColor: BLACK, border: "1px solid"+ BLACK}}>Create</Button>
                     </div>
             
                 </div>
@@ -130,5 +143,6 @@ const postTodo = ()=>{
           </div>
       </div>
     </div>
+    </>
   )
 }
