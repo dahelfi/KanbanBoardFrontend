@@ -16,9 +16,8 @@ export interface Props{
 
 export const TodoBoardCard = (props: Props) => {
     const [hover, setHover] = useState<boolean>(false);
+    const dataContext = useContext(DataContext);
     
-  
-
     const generateColor =(category: string)=>{
         let color: string= ""
         if(category === CATEGORIES.BUSINESS){
@@ -56,13 +55,38 @@ export const TodoBoardCard = (props: Props) => {
             <div style={{width: "100%", cursor: "pointer"}}  className='flex flex-column justify-content-center' >
                 <div className='flex justify-content-around align-items-center' style={{width: "100%"}}>
                     {generateColor(todo.category)}
+                    <i className='pi pi-pencil' />
+                    <i className='pi pi-trash' onClick={()=>dataContext.deleteTodo(todo)}/>
+                </div>
+                <div className='flex justify-content-between' style={{width: "95%", margin: "8px 8px 0px 8px"}}>
+                    <div style={{margin: "0px 0px 0px 0rem"}}> 
+                        <h2 style={{margin: "0rem 0px 0px 0px"}}>{todo.name}</h2>   
+                    </div>
+                   <div className='flex align-items-center' style={{margin: "0rem 0px 0px 0rem"}}>
+                   <h5 style={{margin: "0rem 0px 0px 0rem"}}>{date.toLocaleDateString()}</h5>
+                   </div>
+                    
+                </div>
+            </div>
+    
+        )
+    }
+
+    const footer = (todo: any)=>{
+        let date: Date = new Date(parseInt(todo.expire_date));
+        return( 
+            <div style={{width: "100%", cursor: "pointer"}}  className='flex flex-column justify-content-center' >
+              
+                <img style={{width: "24px", height: "24px", objectFit: "contain"}} src={returnPriorityImage(todo.priority)}/>
+                {/* <div className='flex justify-content-around align-items-center' style={{width: "100%"}}>
+                    {generateColor(todo.category)}
                     <img style={{width: "24px", height: "24px", objectFit: "contain"}} src={returnPriorityImage(todo.priority)}/>
                 </div>
 
                 <div className='flex justify-content-around' style={{width: "80%"}}>
                     <h2>{todo.name}</h2>   
                     <h5>{date.toLocaleDateString()}</h5>
-                </div>
+                </div> */}
             </div>
     
         )
@@ -75,12 +99,8 @@ export const TodoBoardCard = (props: Props) => {
     }
 
   return (
-   <Card draggable={true} onDragStart={()=>dragTodoElement(props.todo)}  onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} header={header(props.todo)} style={{width : "80%", margin: "16px 0px 16px 0px "}}>
-        {hover ? 
-        <div>
-            {props.todo.description}
-        </div>: null    
-    }
+   <Card draggable={true} onDragStart={()=>dragTodoElement(props.todo)}  onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} footer={footer(props.todo)} header={header(props.todo)} style={{width : "80%", margin: "16px 0px 16px 0px "}}>
+        {props.todo.description}
    </Card>
     
   )

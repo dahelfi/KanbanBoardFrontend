@@ -16,7 +16,7 @@ export const Navbar=(props: Props) => {
     
   return (
    <div className='flex justify-content-start align-items-center flex-column' style={{width: "15vw", maxWidth: "232px", backgroundColor: BLACK, height: "100vh"}}>
-    <div className='flex justify-content-center align-items-center' style={{width: "100%", height: "20%"}}>
+    <div className='flex justify-content-center align-items-center' style={{width: "100%", height: "20%", marginBottom: "3rem"}}>
       <img src={Joinlogo} style={{width: "100px", height: "120px"}}/>
     </div>
       <div className='flex align-items-center flex-column justify-content-center' style={{width: "100%"}}>

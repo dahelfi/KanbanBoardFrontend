@@ -9,12 +9,6 @@ export const DataProvider = (props: PropsWithChildren) => {
   const authContext = useContext(Authcontext);
   const [todos, setTodos] = useState<TodoType[]>([]);
   const [loading, setLoading] = useState<any>({loading: false})
- 
-  useEffect(()=>{
-    if(!loading.loading){
-      
-    } 
-  },[loading])
 
   const getTodosByUser = async ()=>{
     setLoading({...loading, loading: true})
@@ -44,6 +38,29 @@ export const DataProvider = (props: PropsWithChildren) => {
         console.log("hier dein todo: ", todo);
    let response = await postDataToServer("PUT", "http://localhost:8000/api/"+ todo.id +"/updateTodo/", todo)
     
+    if(response.status === 200){
+      console.log("success: ", response);
+      getTodosByUser();
+      setLoading({...loading, loading: false})
+    }else{ 
+      setLoading({...loading, loading: false})
+      console.log("error: ", response);
+      
+    }
+  }
+
+  const deleteTodo =async (todo: TodoType) => {
+    setLoading({...loading, loading: true})
+    let csrftoken = getCookie('csrftoken');
+      let response = await fetch("http://localhost:8000/api/"+ todo.id +"/deleteTodo/",{
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+ String(authContext.authToken.access),
+        'X-CSRFToken': csrftoken === null ? "" :  csrftoken,
+      },
+    })
+      
     if(response.status === 200){
       console.log("success: ", response);
       getTodosByUser();
@@ -94,7 +111,7 @@ export const DataProvider = (props: PropsWithChildren) => {
   
 
   return (
-   <DataContext.Provider value={{todos: todos, getTodosByUser: getTodosByUser, postTodoPerUser: postTodoPerUser, updateTodo: updateTodo, loading: loading}}>
+   <DataContext.Provider value={{todos: todos, deleteTodo: deleteTodo, getTodosByUser: getTodosByUser, postTodoPerUser: postTodoPerUser, updateTodo: updateTodo, loading: loading}}>
         {props.children}
    </DataContext.Provider>
   )
