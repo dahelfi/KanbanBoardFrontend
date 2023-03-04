@@ -8,12 +8,14 @@ import { centerItems } from '../constants';
 import { useNavigate } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
 import { findSearchedElement } from '../utils/findSearchedElements';
+import {ViewTodoAndEditDialog} from "./Dialogs/ViewTodoAndEditDialog"
 
 export const CanbanView = () => {
   const dataContext = useContext(DataContext);
   let navigate = useNavigate();
-  const [currentTodo, setCurrentTodo] = useState<TodoType|undefined>(undefined)
-  const [searchValue, setSearchValue] = useState<string>("")
+  
+  const [searchValue, setSearchValue] = useState<string>("");
+
 
   useEffect(()=>{
     
@@ -24,20 +26,18 @@ export const CanbanView = () => {
     event.preventDefault();
 }
 
-
-
 const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
 
-  if(currentTodo !== undefined ){
+  if(dataContext.currentTodo !== undefined ){
       let updateTodo : TodoType = {
-        id: currentTodo.id,
-        created_at: currentTodo.created_at,
-        description: currentTodo.description,
-        priority: currentTodo.priority,
+        id: dataContext.currentTodo.id,
+        created_at: dataContext.currentTodo.created_at,
+        description: dataContext.currentTodo.description,
+        priority: dataContext.currentTodo.priority,
         development_state: development_state,
-        name: currentTodo.name,
-        expire_date: currentTodo.expire_date,
-        category: currentTodo.category
+        name: dataContext.currentTodo.name,
+        expire_date: dataContext.currentTodo.expire_date,
+        category: dataContext.currentTodo.category
       }
       dataContext.updateTodo(updateTodo)
   }
@@ -72,7 +72,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.TODO){
                   return(
-                    <TodoBoardCard dragElement={()=>setCurrentTodo(todo)} todo={todo}/>
+                    <TodoBoardCard  setCurrentTodo={()=>dataContext.setCurrentTodo(todo)} dragElement={()=>dataContext.setCurrentTodo(todo)} todo={todo}/>
                   )
                 }
               })}
@@ -85,7 +85,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.INPROGRESS){
                   return(
-                    <TodoBoardCard dragElement={()=>setCurrentTodo(todo)} todo={todo}/>
+                    <TodoBoardCard  setCurrentTodo={()=>dataContext.setCurrentTodo(todo)} dragElement={()=>dataContext.setCurrentTodo(todo)} todo={todo}/>
                   )
                 }
               })}
@@ -97,7 +97,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.FEEDBACK){
                   return(
-                    <TodoBoardCard dragElement={()=>setCurrentTodo(todo)} todo={todo}/>
+                    <TodoBoardCard  setCurrentTodo={()=>dataContext.setCurrentTodo(todo)} dragElement={()=>dataContext.setCurrentTodo(todo)} todo={todo}/>
                   )
                 }
               })}
@@ -109,14 +109,15 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.DONE){
                   return(
-                    <TodoBoardCard dragElement={()=>setCurrentTodo(todo)} todo={todo}/>
+                    <TodoBoardCard  setCurrentTodo={()=>dataContext.setCurrentTodo(todo)} dragElement={()=>dataContext.setCurrentTodo(todo)} todo={todo}/>
                   )
                 }
               })}
           </div>
-
+            <ViewTodoAndEditDialog  />
         </div>
     </div>
+    
     </>
   )
 }

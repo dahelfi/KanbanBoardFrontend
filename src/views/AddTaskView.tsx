@@ -1,5 +1,5 @@
 import {useState, useContext} from 'react'
-import { BLACK, centerItems, DIRTYWHITE, SKYBLUE } from '../constants'
+import { BLACK, centerItems, DARKBLUE, DIRTYWHITE, PINK, SKYBLUE } from '../constants'
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
@@ -25,11 +25,11 @@ export const AddTaskView = () => {
 
  const calculateColorForCategory = (category: string)=>{
     if(category === "BUSINESS"){
-      return "#52c9ff";
+      return DARKBLUE;
     }else if(category === "PRIVATE"){
-      return "#1446eb";
+      return SKYBLUE;
     }else{
-      return "gray"
+      return PINK;
     }
   }
 
@@ -80,8 +80,7 @@ const postTodo = ()=>{
     expire_date: date.getTime()
   }
 
-  dataContext.postTodoPerUser(todo)
-  navigate("canban/");
+  dataContext.postTodoPerUser(todo);
 }
 
   return (

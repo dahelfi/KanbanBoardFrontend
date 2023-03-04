@@ -20,7 +20,7 @@ export const BoardView = (props: Props) => {
 
   useEffect(()=>{
     navigate(calculateSelectedRoute(tabsArray, selectedTabId));
-    console.log("hier dein return string: ", calculateSelectedRoute(tabsArray, selectedTabId));
+   
   },[authenticationContext.authToken])
   
   

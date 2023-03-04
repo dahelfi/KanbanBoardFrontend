@@ -5,34 +5,36 @@ import urgentIcon from "../../assets/urgent.png"
 import mediumIcon from "../../assets/medium.png"
 import lowIcon from "../../assets/low.png"
 import { PRIORITY } from '../../types/PriorityEnum';
-
+import "./../../style/changes.scss"
 import { DataContext } from '../../Provider/DataProvider';
 import { TodoType } from '../../types/TodoType';
+import { CategoryElement } from '../DesignStructure/CategoryElement';
 
 export interface Props{
     todo: any;
     dragElement: (todo: TodoType)=> any;
+    setCurrentTodo: (todo: TodoType)=> any;
 }
 
 export const TodoBoardCard = (props: Props) => {
     const [hover, setHover] = useState<boolean>(false);
     const dataContext = useContext(DataContext);
-    
-    const generateColor =(category: string)=>{
-        let color: string= ""
-        if(category === CATEGORIES.BUSINESS){
-            color = "#52c9ff";
-        }else if(category == CATEGORIES.PRIVATE){
-            color = "#1446eb";
-        }else{
-            color = "gray"
-        }
 
-        return(
-            <div className='flex justify-content-center' style={{backgroundColor: color, padding: "4px 16px 4px 16px", borderRadius: "5px", color: "white", width: "50%", marginLeft: "16px"}}>
-                <span>{category}</span>
-          </div>
-        )
+
+    const controlLongDescription =(description: string)=>{
+        if(description.length > 35){
+            return description.slice(0,35) + "...";
+        } else{
+            return description;
+        }
+    }
+
+    const controlLongName =(name: string)=>{
+        if(name.length > 20){
+            return name.slice(0,20) + "...";
+        }else{
+            return name;
+        }
     }
 
     const returnPriorityImage= (priority: PRIORITY)=>{
@@ -54,13 +56,13 @@ export const TodoBoardCard = (props: Props) => {
         return( 
             <div style={{width: "100%", cursor: "pointer"}}  className='flex flex-column justify-content-center' >
                 <div className='flex justify-content-around align-items-center' style={{width: "100%"}}>
-                    {generateColor(todo.category)}
-                    <i className='pi pi-pencil' />
+                    <CategoryElement fontSize='14px' width='50%' height='100%' category={todo.category}/>
+                    <i className='pi pi-pencil' onClick={()=>{dataContext.setVisibleDialog(true); dataContext.setCurrentTodo(props.todo); dataContext.setEditMode(true)}}/>
                     <i className='pi pi-trash' onClick={()=>dataContext.deleteTodo(todo)}/>
                 </div>
                 <div className='flex justify-content-between' style={{width: "95%", margin: "8px 8px 0px 8px"}}>
                     <div style={{margin: "0px 0px 0px 0rem"}}> 
-                        <h2 style={{margin: "0rem 0px 0px 0px"}}>{todo.name}</h2>   
+                        <h2 style={{margin: "0rem 0px 0px 0px"}}>{controlLongName(todo.name)}</h2>   
                     </div>
                    <div className='flex align-items-center' style={{margin: "0rem 0px 0px 0rem"}}>
                    <h5 style={{margin: "0rem 0px 0px 0rem"}}>{date.toLocaleDateString()}</h5>
@@ -75,7 +77,7 @@ export const TodoBoardCard = (props: Props) => {
     const footer = (todo: any)=>{
         let date: Date = new Date(parseInt(todo.expire_date));
         return( 
-            <div style={{width: "100%", cursor: "pointer"}}  className='flex flex-column justify-content-center' >
+            <div style={{width: "100%", cursor: "pointer", padding: "0rem"}}  className='flex flex-column justify-content-center' >
               
                 <img style={{width: "24px", height: "24px", objectFit: "contain"}} src={returnPriorityImage(todo.priority)}/>
                 {/* <div className='flex justify-content-around align-items-center' style={{width: "100%"}}>
@@ -93,14 +95,12 @@ export const TodoBoardCard = (props: Props) => {
     }
 
     const dragTodoElement = (todo: TodoType)=>{
-        console.log("hier dein element: ", todo);
-        
         props.dragElement(todo);
     }
 
   return (
-   <Card draggable={true} onDragStart={()=>dragTodoElement(props.todo)}  onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} footer={footer(props.todo)} header={header(props.todo)} style={{width : "80%", margin: "16px 0px 16px 0px "}}>
-        {props.todo.description}
+   <Card onClick={()=>{dataContext.setVisibleDialog(true); dataContext.setCurrentTodo(props.todo); dataContext.setEditMode(false)}} draggable={true} onDragStart={()=>dragTodoElement(props.todo)}  onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} footer={footer(props.todo)} header={header(props.todo)} style={{width : "80%", margin: "16px 0px 16px 0px", cursor: "pointer"}}>
+        {controlLongDescription(props.todo.description)}
    </Card>
     
   )
