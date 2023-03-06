@@ -4,8 +4,14 @@ export interface ContactType{
     lastname: string; 
     email: string;
     phonenumber: string;
+    color: string;
 }
 
 export interface ContactObjectType{
-    [key: string]: ContactType[];
+    letter: string;
+    contactObject: ContactType;
+}
+
+export interface ContactObjectTypeBig{
+    [key: string]: ContactObjectType[];
 }

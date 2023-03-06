@@ -1,12 +1,11 @@
-import React, { PropsWithChildren, useState, useContext, useEffect } from 'react'
+import { PropsWithChildren, useState, useContext, useEffect, createContext } from 'react'
 import { TodoType } from '../types/TodoType';
 import { getCookie } from '../utils/getCookie';
 import { Authcontext } from './AuthProvider';
 import { ContactType } from '../types/ContactType';
-import { createContactObjectFromContactArray } from '../utils/createContactObjectFromContactArray';
+import { createSortedArrayFromContactArray } from '../utils/createSortedArrayFromContactArray';
 
-
-export const DataContext = React.createContext<any|undefined>(undefined)
+export const DataContext = createContext<any|undefined>(undefined)
 
 export const DataProvider = (props: PropsWithChildren) => {
   const authContext = useContext(Authcontext);
@@ -16,7 +15,7 @@ export const DataProvider = (props: PropsWithChildren) => {
   const [currentTodo, setCurrentTodo] = useState<TodoType|undefined>(undefined);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [contacts, setContacts] = useState<ContactType[]>([]);
-  const [contactObject, setContactObject] = useState<any>(createContactObjectFromContactArray(contacts))
+  const [currentContact, setCurrentContact] = useState<ContactType|undefined>(undefined)
 
   
   const getTodosByUser = async ()=>{
@@ -74,10 +73,11 @@ export const DataProvider = (props: PropsWithChildren) => {
     
       if(response.status === 200){
         setLoading({...loading, loading: false})
-        setContacts([...data]);
+        setContacts([...createSortedArrayFromContactArray(data)]);
       }else if(response.status === 401){
         authContext.logoutUser();
       }
+      
   }
 
   const deleteTodo =async (todo: TodoType) => {
@@ -153,6 +153,10 @@ export const DataProvider = (props: PropsWithChildren) => {
   const setEditModeValue = (editModeBoolean: boolean)=>{
     setEditMode(editModeBoolean);
   }
+
+  const setCurrentContactValue =(currentContact: ContactType)=>{
+    setCurrentContact(currentContact);
+  }
   
   return (
    <DataContext.Provider value={{todos: todos, deleteTodo: deleteTodo, 
@@ -160,7 +164,9 @@ export const DataProvider = (props: PropsWithChildren) => {
                         updateTodo: updateTodo, loading: loading, visibleDialog: visibleDialog, 
                         setVisibleDialog: setVisibleValue, currentTodo: currentTodo, setCurrentTodo: 
                         setCurrentTodoValue, editMode: editMode, setEditMode: setEditModeValue,
-                        getContactsPerUser: getContactsPerUser, contactObject: contactObject,
+                        getContactsPerUser: getContactsPerUser, 
+                        contacts: contacts, setCurrentContact: setCurrentContactValue, currentContact: currentContact,
+                        
                         }}>
         {props.children}
    </DataContext.Provider>
