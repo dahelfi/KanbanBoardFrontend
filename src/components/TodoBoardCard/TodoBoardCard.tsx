@@ -9,6 +9,7 @@ import "./../../style/changes.scss"
 import { DataContext } from '../../Provider/DataProvider';
 import { TodoType } from '../../types/TodoType';
 import { CategoryElement } from '../DesignStructure/CategoryElement';
+import { AssignedContacts } from './AssignedContacts';
 
 export interface Props{
     todo: any;
@@ -57,7 +58,7 @@ export const TodoBoardCard = (props: Props) => {
             <div style={{width: "100%", cursor: "pointer"}}  className='flex flex-column justify-content-center' >
                 <div className='flex justify-content-around align-items-center' style={{width: "100%"}}>
                     <CategoryElement fontSize='14px' width='50%' height='100%' category={todo.category}/>
-                    <i className='pi pi-pencil' onClick={()=>{dataContext.setVisibleDialog(true); dataContext.setCurrentTodo(props.todo); dataContext.setEditMode(true)}}/>
+                    <i className='pi pi-pencil' onClick={()=>{dataContext.setVisibleTodoDialog(true); dataContext.setCurrentTodo(props.todo); dataContext.setEditMode(true)}}/>
                     <i className='pi pi-trash' onClick={()=>dataContext.deleteTodo(todo)}/>
                 </div>
                 <div className='flex justify-content-between' style={{width: "95%", margin: "8px 8px 0px 8px"}}>
@@ -77,18 +78,10 @@ export const TodoBoardCard = (props: Props) => {
     const footer = (todo: any)=>{
         let date: Date = new Date(parseInt(todo.expire_date));
         return( 
-            <div style={{width: "100%", cursor: "pointer", padding: "0rem"}}  className='flex flex-column justify-content-center' >
+            <div style={{width: "100%", cursor: "pointer", padding: "0rem"}}  className='flex justify-content-between' >
               
+                <AssignedContacts assignedContacts={todo.contacts}/>
                 <img style={{width: "24px", height: "24px", objectFit: "contain"}} src={returnPriorityImage(todo.priority)}/>
-                {/* <div className='flex justify-content-around align-items-center' style={{width: "100%"}}>
-                    {generateColor(todo.category)}
-                    <img style={{width: "24px", height: "24px", objectFit: "contain"}} src={returnPriorityImage(todo.priority)}/>
-                </div>
-
-                <div className='flex justify-content-around' style={{width: "80%"}}>
-                    <h2>{todo.name}</h2>   
-                    <h5>{date.toLocaleDateString()}</h5>
-                </div> */}
             </div>
     
         )
@@ -99,7 +92,7 @@ export const TodoBoardCard = (props: Props) => {
     }
 
   return (
-   <Card onClick={()=>{dataContext.setVisibleDialog(true); dataContext.setCurrentTodo(props.todo); dataContext.setEditMode(false)}} draggable={true} onDragStart={()=>dragTodoElement(props.todo)}  onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} footer={footer(props.todo)} header={header(props.todo)} style={{width : "80%", margin: "16px 0px 16px 0px", cursor: "pointer"}}>
+   <Card onClick={()=>{dataContext.setVisibleTodoDialog(true); dataContext.setCurrentTodo(props.todo); dataContext.setEditMode(false)}} draggable={true} onDragStart={()=>dragTodoElement(props.todo)}  onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} footer={footer(props.todo)} header={header(props.todo)} style={{width : "80%", margin: "16px 0px 16px 0px", cursor: "pointer"}}>
         {controlLongDescription(props.todo.description)}
    </Card>
     

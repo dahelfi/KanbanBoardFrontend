@@ -8,6 +8,8 @@ import { TabType } from '../types/Tab';
 import { useNavigate } from 'react-router-dom';
 import { calculateSelectedRoute } from '../utils/calculateSelectedRoute';
 import { tabsArray } from '../data/tabs';
+import { Toast } from 'primereact/toast';
+import { DataContext } from '../Provider/DataProvider';
 
 interface Props{
   tabs: TabType[];
@@ -16,6 +18,7 @@ interface Props{
 export const BoardView = (props: Props) => {
   const authenticationContext = useContext(Authcontext);
   const [selectedTabId, setSelectedTabId] = useState<string>("a2f5hT");
+  const dataContext = useContext(DataContext);
   let navigate = useNavigate();
 
   useEffect(()=>{
@@ -32,6 +35,7 @@ export const BoardView = (props: Props) => {
       <div className='flex flex-column' style={{width: "90vw"}}>
         <Header/>
         <Outlet/>
+        <Toast ref={dataContext.toastRef} />
       </div>
     </div>
   )

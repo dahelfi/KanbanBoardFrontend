@@ -18,7 +18,6 @@ export const CanbanView = () => {
 
 
   useEffect(()=>{
-    
     dataContext.getTodosByUser();
   },[])
 
@@ -37,9 +36,10 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
         development_state: development_state,
         name: dataContext.currentTodo.name,
         expire_date: dataContext.currentTodo.expire_date,
-        category: dataContext.currentTodo.category
+        category: dataContext.currentTodo.category,
+        contacts: dataContext.currentTodo.contacts
       }
-      dataContext.updateTodo(updateTodo)
+      dataContext.updateTodo(updateTodo, false)
   }
 }
 

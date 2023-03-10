@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react'
+import {useState, useContext, useEffect} from 'react'
 import { BLACK, centerItems, DARKBLUE, DIRTYWHITE, PINK, SKYBLUE } from '../constants'
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -12,6 +12,9 @@ import { Button } from 'primereact/button';
 import { DataContext } from '../Provider/DataProvider';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useNavigate } from 'react-router-dom';
+import {  parseContactsToDropdownFormat, returnIdArrayOfSelectedContacts } from '../utils/parseContacts';
+import { ContactType } from '../types/ContactType';
+import { AddTodoContact } from '../components/AddTodoContact/AddTodoContact';
 
 export const AddTaskView = () => {
   let navigate = useNavigate();
@@ -19,9 +22,25 @@ export const AddTaskView = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [categories, setCategories] = useState<any>(undefined);
+  const [selectedContact, setSelectedContact] = useState<any>(undefined)
   const [date, setDate] = useState<any>(null);
   const [selectedPriorityEnumId, setSelectedPriorityEnumId] = useState<string|undefined>(undefined);
   const [priorityArray, setPriorityArray] = useState<PriobuttonType[]>(priorityButtonArray);
+  const [selectedContacts, setSelectedContacts] = useState<ContactType[]>([]);
+
+  useEffect(()=>{
+    if(selectedContact){
+      let temporaryArray: ContactType[] = [...selectedContacts];
+      temporaryArray.push(selectedContact);
+      setSelectedContacts([...temporaryArray]);
+    }
+    setSelectedContact(undefined);
+  },[selectedContact])
+
+  useEffect(()=>{ 
+    dataContext.getContactsPerUser();
+  },[])
+
 
  const calculateColorForCategory = (category: string)=>{
     if(category === "BUSINESS"){
@@ -31,6 +50,17 @@ export const AddTaskView = () => {
     }else{
       return PINK;
     }
+  }
+
+  const deleteContactFromSelectedContacts =(contact: ContactType)=>{
+    let temporaryArray: ContactType[] = [...selectedContacts];
+    temporaryArray.forEach((contactElement: ContactType, index: number)=>{
+      if(contactElement.id === contact.id){
+        temporaryArray.splice(index, 1);
+      }
+    })
+  
+    setSelectedContacts([...temporaryArray]);
   }
 
   const selectedCategoryTemplate = (option: any, props: any) => {
@@ -46,6 +76,25 @@ export const AddTaskView = () => {
     return <span>{props.placeholder}</span>;
 };
 
+const contactsOptionTemplate = (option: any) => {
+  return (
+      <div className="flex align-items-center justify-content-start" style={{width: "90%", }}>
+          <div className={centerItems} style={{height: "32px", width: "32px",marginRight: "1rem", color: "white", borderRadius: "100%", backgroundColor: option.value.color}}>{option.value.prename.charAt(0)+option.value.lastname.charAt(0)}</div>
+          <div>{option.label}</div>
+      </div>
+  );
+};
+
+
+const categoryOptionTemplate = (option: any) => {
+    return (
+        <div className="flex align-items-center justify-content-between" style={{width: "90%"}}>
+            <div>{option.label}</div>
+            <div style={{height: "16px", width: "16px", borderRadius: "100%", backgroundColor: calculateColorForCategory(option.value)}}/>
+        </div>
+    );
+};
+
 const returnPriorityValue=()=>{
   let returnValue;
   priorityButtonArray.forEach((priorityElement: any)=>{
@@ -58,15 +107,6 @@ const returnPriorityValue=()=>{
   return returnValue;
 }
 
-const categoryOptionTemplate = (option: any) => {
-    return (
-        <div className="flex align-items-center justify-content-between" style={{width: "90%"}}>
-            <div>{option.label}</div>
-            <div style={{height: "16px", width: "16px", borderRadius: "100%", backgroundColor: calculateColorForCategory(option.value)}}/>
-        </div>
-    );
-};
-
 const postTodo = ()=>{
   console.log("date: ", date.getTime());
   
@@ -77,7 +117,8 @@ const postTodo = ()=>{
     category: categories,
     priority: returnPriorityValue(),
     development_state: "TODO",
-    expire_date: date.getTime()
+    expire_date: date.getTime(),
+    contacts: returnIdArrayOfSelectedContacts(selectedContacts)
   }
 
   dataContext.postTodoPerUser(todo);
@@ -122,11 +163,16 @@ const postTodo = ()=>{
                       <Calendar style={{width: "25vw"}} value={date} onChange={(e) => setDate(e.value)} dateFormat="dd/mm/yy" />
                   </div>
               
-                    <div>
+                  <div>
                       <h4>Priority</h4>
                         <div style={{width: "25vw"}}>
                           <PrioElement priorityArray={priorityArray} selectedPriorityEnumId ={selectedPriorityEnumId} liftSelectedPriorityEnum1={(priorityEnumId: string)=>{setSelectedPriorityEnumId(priorityEnumId)}}  />
                         </div>
+                    </div>
+                    <div>
+                      <h4>Assigned To</h4>
+                      <AddTodoContact deleteContactFromSelectedContacts={deleteContactFromSelectedContacts} selectedContacts={selectedContacts}/>
+                      <Dropdown placeholder='Select assigned people'style={{width: "25vw"}}  itemTemplate={contactsOptionTemplate} value={selectedContact} onChange={(e)=>setSelectedContact(e.value)} options={parseContactsToDropdownFormat(dataContext.contacts)} />
                     </div>
 
                     </div>

@@ -3,6 +3,7 @@ import { ContactHeader } from '../components/ContactsViewComponents/ContactHeade
 import { ContactsPhoneBook } from '../components/ContactsViewComponents/ContactsPhoneBook'
 import { ShowSelectedContact } from '../components/ContactsViewComponents/ShowSelectedContact';
 import { DataContext } from '../Provider/DataProvider'
+import { CreateEditContactDialog } from './Dialogs/CreateEditContactDialog';
 
 
 
@@ -10,12 +11,10 @@ export const ContactsView = () => {
   const dataContext = useContext(DataContext);
 
   useEffect(()=>{ 
-    dataContext.getContactsPerUser();
+    dataContext.getContactsPerUser();      
+  },[])
 
-      
-    },[])
-
-    //let getRandomElementfromArray = Math.floor(Math.random() * array.length)
+    
   return (
     <div className='flex' style={{width: "100%", height: "100%"}}>
       <ContactsPhoneBook/>
@@ -23,7 +22,7 @@ export const ContactsView = () => {
         <ContactHeader/>
         <ShowSelectedContact/>
       </div>
-     
+     <CreateEditContactDialog/>
     </div>
   )
 }

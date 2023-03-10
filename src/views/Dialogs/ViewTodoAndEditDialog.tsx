@@ -3,20 +3,29 @@ import { Dialog } from 'primereact/dialog';
 import { DataContext } from '../../Provider/DataProvider';
 import { CategoryElement } from '../../components/DesignStructure/CategoryElement';
 import { PrioElementWithColor } from '../../components/PrioElement/PrioElementWithColor';
+import { ContactType } from '../../types/ContactType';
+import { ContactColorShortcutElement } from '../../components/ContactColorShotrcutElement/ContactColorShortcutElement';
+import { BLACK, centerItems } from '../../constants';
 
-export interface Props{
- 
-}
 
-export const ViewTodoAndEditDialog = (props: Props) => {
-  const dataContext = useContext(DataContext)
+export const ViewTodoAndEditDialog = () => {
+  const dataContext = useContext(DataContext);
+  let styleObject = {};
+
+  if(dataContext.currentTodo.contacts.length > 3){
+    styleObject = {
+      height: "20vh",
+      overflowY: "scroll"
+    }
+  }
   
   const hideElement= ()=>{
-    dataContext.setVisibleDialog(false)
+    dataContext.setVisibleTodoDialog(false)
   }
 
   return (
-    <Dialog visible={dataContext.visibleDialog} style={{ width: '40vw', height: "80vh", backgroundColor: "green", position: "relative"}} onHide={hideElement}>
+    <Dialog visible={dataContext.visibleTodoDialog} style={{ width: '35vw', height: "70vh", position: "relative",}} onHide={hideElement}>
+      <div style={{padding: "1.5rem", position: "relative"}}>
       <i style={{position: "absolute", top: "1.5rem", right: "1.5rem", cursor: "pointer"}} onClick={hideElement} className="pi pi-times"/>
       <div style={{height: "8%"}}>
         <CategoryElement fontSize='20px' width='40%' height='100%' category={dataContext?.currentTodo?.category} />
@@ -29,6 +38,30 @@ export const ViewTodoAndEditDialog = (props: Props) => {
       <div className='flex align-items-center' style={{height: "7%"}}>
           <h4 style={{marginRight: "1rem"}} className='font-bold'>Priority:</h4> <PrioElementWithColor priority={dataContext?.currentTodo?.priority}/>
       </div>
+        <div style={{width: "90%"}}>
+          <h4 style={{marginRight: "1rem"}} className='font-bold'>Assigned To:</h4> 
+              <div style={styleObject}>
+              {
+                dataContext.currentTodo.contacts.map((contactId: number)=>{
+                  let contact: ContactType = dataContext.getContactById(contactId)
+                  return(
+                  <div className="flex align-items-center justify-content-between" style={{width: "100%", marginTop: "1rem"}}>
+                    <div className='flex'>
+                      <ContactColorShortcutElement width='64px' height='64px' contact={contact}/>
+                      <h3 style={{marginLeft: "1rem"}}>{contact.prename + " " + contact.lastname}</h3>
+                    </div>
+                    <i className='pi pi-times' style={{cursor: "pointer"}}/>
+                  {/* TODO: ADD DELETE FUNCTION AT EDITMODE */}
+                  </div>
+                  )
+                })
+              }
+              </div>
+        </div>
+        </div>
+        <div className={centerItems} style={{width: "64px", height: "64px", backgroundColor: BLACK, position: "absolute", bottom: "2.5rem", right: "2.5rem", borderRadius: "5px", cursor: "pointer"}}>
+        <i style={{color: "white"}} className='pi pi-pencil'/>
+        </div>
     </Dialog>
   )
 }

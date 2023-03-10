@@ -15,18 +15,18 @@ export const SignUpComponent = () => {
     </div>
   
    <div style={{width: "100%"}} className='flex flex-column align-items-center' >
-   <span className="p-input-icon-right mb-3">
-        <i className="pi pi-user" />
-        <InputText placeholder="Name" />
-    </span>
-   <span className="p-input-icon-right mb-3">
-        <i className="pi pi-envelope" />
-        <InputText placeholder="Email" />
-    </span>
-    <span className="p-input-icon-right mb-3">
-        <i className="pi pi-lock" />
-        <InputText  type={"password"} placeholder="Password" />
-    </span>
+      <span className="p-input-icon-right mb-3">
+            <i className="pi pi-user" />
+            <InputText placeholder="Name" />
+        </span>
+      <span className="p-input-icon-right mb-3">
+            <i className="pi pi-envelope" />
+            <InputText placeholder="Email" />
+        </span>
+        <span className="p-input-icon-right mb-3">
+            <i className="pi pi-lock" />
+            <InputText  type={"password"} placeholder="Password" />
+        </span>
     <Link to="" className="mb-2" style={{color: SKYBLUE}}>Forgot my password</Link>
     <Button className='flex justify-content-center align-items-center' style={{backgroundColor: BLACK, color: "white", width: "145px", height: "51px"}}>Signup</Button>
    </div>

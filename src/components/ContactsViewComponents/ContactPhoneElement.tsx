@@ -13,7 +13,7 @@ export const ContactPhoneElement = (props: Props) => {
 
   let selected: boolean = props.contactElement.id === dataContext.currentContact?.id
   return (
-    <div className="flex align-items-center"style={{width: "100%", cursor: "pointer",padding: "0.25rem 0rem 0.25rem 0.5rem", color: (hover || selected ? "white": "black"),  borderRadius: "5px", marginBottom: "5px", backgroundColor: (hover|| selected ? DARKBLACK : "white")}} 
+    <div className="flex align-items-center"style={{width: "100%", cursor: "pointer",padding: "0.25rem 0rem 0.25rem 0.5rem", color: (hover || selected ? "white": "black"),  borderRadius: "5px", marginBottom: "5px", backgroundColor: (hover|| selected ? BLACK : "white")}} 
     onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} onClick={()=>dataContext.setCurrentContact(props.contactElement)}>
       <div className={centerItems} style={{width: "3rem", height: "3rem", color: "white", backgroundColor: props.contactElement.color, borderRadius: "100%"}}>
         {props.contactElement.prename.charAt(0) + props.contactElement.lastname.charAt(0)}

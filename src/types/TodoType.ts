@@ -11,4 +11,5 @@ export interface TodoType{
     category: CATEGORIES;
     name: string;
     expire_date: Date |string;
+    contacts: number[];
 }
