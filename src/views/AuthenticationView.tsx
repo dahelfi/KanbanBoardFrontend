@@ -6,10 +6,10 @@ import { Link, Outlet } from 'react-router-dom';
 export const AuthenticationView = () => {
 
   return (
-    <div style={{ }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", height: "13vh"}} > 
+    <>
+      <div id="authentication-main-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start"}} > 
   
-      <img src={JoinLogo} style={{width: "100px", height:"120px", objectFit: "contain", marginLeft: "4rem", marginTop: "2rem"}} />
+      <img src={JoinLogo} style={{minWidth: "5vw", minHeight:"8vh", objectFit: "contain", marginLeft: "4rem", marginTop: "2rem"}} />
       
          
          <div style={{display: "flex"}} className="pr-8 pt-4 flex align-items-center">
@@ -17,13 +17,10 @@ export const AuthenticationView = () => {
          <Link className='flex justify-content-center align-items-center' to={"/auth/signup"} style={{backgroundColor: BLACK, color: "white", height: "51px", width: "145px", textDecoration: "none", borderRadius: "7px"}}>Sign up</Link>
          </div>
       
-
       </div>
       <div style={{display: "flex", justifyContent: "center", alignItems: "flex-start", height: "87vh", width:"100%", paddingTop: "8rem"}}>
        <Outlet/>
-      </div>
-   
-        
-    </div>
+      </div>    
+    </>
   )
 }

@@ -6,13 +6,15 @@ import { PrioElementWithColor } from '../../components/PrioElement/PrioElementWi
 import { ContactType } from '../../types/ContactType';
 import { ContactColorShortcutElement } from '../../components/ContactColorShotrcutElement/ContactColorShortcutElement';
 import { BLACK, centerItems } from '../../constants';
+import { useNavigate } from 'react-router-dom';
 
 
 export const ViewTodoAndEditDialog = () => {
   const dataContext = useContext(DataContext);
   let styleObject = {};
+  let navigate = useNavigate();
 
-  if(dataContext.currentTodo.contacts.length > 3){
+  if(dataContext?.currentTodo && dataContext?.currentTodo?.contacts.length > 3){
     styleObject = {
       height: "20vh",
       overflowY: "scroll"
@@ -40,18 +42,17 @@ export const ViewTodoAndEditDialog = () => {
       </div>
         <div style={{width: "90%"}}>
           <h4 style={{marginRight: "1rem"}} className='font-bold'>Assigned To:</h4> 
-              <div style={styleObject}>
+              <div>
               {
-                dataContext.currentTodo.contacts.map((contactId: number)=>{
+                dataContext.currentTodo?.contacts.map((contactId: number)=>{
                   let contact: ContactType = dataContext.getContactById(contactId)
+                  
                   return(
                   <div className="flex align-items-center justify-content-between" style={{width: "100%", marginTop: "1rem"}}>
                     <div className='flex'>
                       <ContactColorShortcutElement width='64px' height='64px' contact={contact}/>
                       <h3 style={{marginLeft: "1rem"}}>{contact.prename + " " + contact.lastname}</h3>
-                    </div>
-                    <i className='pi pi-times' style={{cursor: "pointer"}}/>
-                  {/* TODO: ADD DELETE FUNCTION AT EDITMODE */}
+                    </div> 
                   </div>
                   )
                 })
@@ -59,7 +60,7 @@ export const ViewTodoAndEditDialog = () => {
               </div>
         </div>
         </div>
-        <div className={centerItems} style={{width: "64px", height: "64px", backgroundColor: BLACK, position: "absolute", bottom: "2.5rem", right: "2.5rem", borderRadius: "5px", cursor: "pointer"}}>
+        <div onClick={()=>{dataContext.setSelectedTabId("Hn4!l1"); navigate("/addTask/")}} className={centerItems} style={{width: "64px", height: "64px", backgroundColor: BLACK, position: "absolute", bottom: "2.5rem", right: "2.5rem", borderRadius: "5px", cursor: "pointer"}}>
         <i style={{color: "white"}} className='pi pi-pencil'/>
         </div>
     </Dialog>

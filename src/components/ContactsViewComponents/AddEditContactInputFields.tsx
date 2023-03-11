@@ -32,6 +32,14 @@ export const AddEditContactInputFields = () => {
     logoElement = <div className={centerItems} style={{width: "120px", height: "120px", backgroundColor: LIGHTGREY, borderRadius: "100%"}}><i style={{color: "white", fontSize: "40px"}} className="pi pi-user"/></div>
   }
 
+  const resetInputfields = ()=>{
+    setPrename("");
+    setLastname("");
+    setEmail("");
+    setPhonenumber("");
+    setId("");
+  }
+
   const createOrEditContact =()=>{
     if(dataContext.editModeContact){
       let updateContact: ContactType ={
@@ -54,6 +62,7 @@ export const AddEditContactInputFields = () => {
       }
       dataContext.postContactPerUser(newContact);
     }
+    resetInputfields();
   }
 
   return (

@@ -30,7 +30,6 @@ export const returnContactsArrayAsMap =(contacts: ContactType[])=>{
         contactsMap.set(contacts.id ,contacts);
     })
   
-    console.log("hier deine map: ", contactsMap);
     
     return contactsMap;
 }

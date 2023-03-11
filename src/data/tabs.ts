@@ -3,7 +3,6 @@ import summaryIcon from "../assets/summaryIcon.png"
 import boardIcon from "../assets/boardIcon.png"
 import addtaskIcon from "../assets/addtaskIcon.png"
 import contactIcon from "../assets/contactsIcon.png"
-import { generateHash } from "../utils/generateHash";
 
 export const tabsArray: TabType[]= [{
     id: "a2f5hT",
@@ -12,19 +11,19 @@ export const tabsArray: TabType[]= [{
     link: "/summary/"
     },
     {
-    id: generateHash(4),
+    id: "g5&mgÖ",
     name: "Board",
     img: boardIcon,
     link: "/canban/"
     },
     {
-    id: generateHash(4),
+    id: "Hn4!l1",
     name: "Add Task",
     img: addtaskIcon,
     link: "/addTask/"
     },
     {
-    id: generateHash(4),
+    id: "g8)göL",
     name: "Contacts",
     img: contactIcon,
     link: "/contacts/"

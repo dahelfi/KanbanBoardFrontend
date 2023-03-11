@@ -19,6 +19,7 @@ export const CanbanView = () => {
 
   useEffect(()=>{
     dataContext.getTodosByUser();
+    dataContext.getContactsPerUser();
   },[])
 
   const allowDrop = (event: any)=>{
@@ -65,10 +66,11 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
           </div>
       
         <div className='flex justify-content-around align-items-center' style={{width: "100%", height: "100%"}}>
-          <div onDragOver={(event: any)=>allowDrop(event)} onDrop={()=>onDragTodo(DEVELOPMENTSTATE.TODO)} className='flex flex-column align-items-center' style={{ height: "90%", width: "23%", overflowY: "scroll"}}>
+          <div onDragOver={(event: any)=>allowDrop(event)} onDrop={()=>onDragTodo(DEVELOPMENTSTATE.TODO)} className='flex flex-column align-items-center' style={{ height: "90%", width: "23%"}}>
               <div style={{width: "80%"}} className='flex justify-content-start'>
                 <h2>TODO</h2>
               </div>
+              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll"}}>
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.TODO){
                   return(
@@ -76,12 +78,14 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
                   )
                 }
               })}
-
+              </div>
           </div>
-          <div onDragOver={(event: any)=>allowDrop(event)} className='flex flex-column align-items-center' onDrop={()=>onDragTodo(DEVELOPMENTSTATE.INPROGRESS)} style={{ height: "90%", width: "23%", overflowY: "scroll"}}>
+          <div onDragOver={(event: any)=>allowDrop(event)} className='flex flex-column align-items-center' onDrop={()=>onDragTodo(DEVELOPMENTSTATE.INPROGRESS)} style={{ height: "90%", width: "23%"}}>
             <div style={{width: "80%"}} className='flex justify-content-start'>
               <h2>IN PROGRESS</h2>
               </div>
+              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll"}}>
+
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.INPROGRESS){
                   return(
@@ -90,10 +94,13 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
                 }
               })}
           </div>
-          <div onDragOver={(event: any)=>allowDrop(event)}  className='flex flex-column align-items-center' onDrop={()=>onDragTodo(DEVELOPMENTSTATE.FEEDBACK)} style={{ height: "90%", width: "23%", overflowY: "scroll"}}>
+          </div>
+          <div onDragOver={(event: any)=>allowDrop(event)}  className='flex flex-column align-items-center' onDrop={()=>onDragTodo(DEVELOPMENTSTATE.FEEDBACK)} style={{ height: "90%", width: "23%"}}>
               <div style={{width: "80%"}} className='flex justify-content-start'>
                 <h2>FEEDBACK</h2>
               </div>
+              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll"}}>
+
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.FEEDBACK){
                   return(
@@ -101,11 +108,14 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
                   )
                 }
               })}
+              </div>
           </div>
-          <div onDragOver={(event: any)=>allowDrop(event)} className='flex flex-column align-items-center' onDrop={()=>onDragTodo(DEVELOPMENTSTATE.DONE)} style={{ height: "90%", width: "23%", overflowY: "scroll"}}>
+          <div onDragOver={(event: any)=>allowDrop(event)} className='flex flex-column align-items-center' onDrop={()=>onDragTodo(DEVELOPMENTSTATE.DONE)} style={{ height: "90%", width: "23%"}}>
               <div style={{width: "80%"}} className='flex justify-content-start'>
                 <h2>DONE</h2>
               </div>
+              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll"}}>
+
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.DONE){
                   return(
@@ -113,6 +123,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
                   )
                 }
               })}
+              </div>
           </div>
             <ViewTodoAndEditDialog  />
         </div>

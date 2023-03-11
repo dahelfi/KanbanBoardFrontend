@@ -6,17 +6,17 @@ import { generateHash } from "../utils/generateHash";
 import { PRIORITY } from "../types/PriorityEnum";
 
 export const priorityButtonArray: PriobuttonType[]= [{
-    id: generateHash(4),
+    id: "(!mB",
     name: PRIORITY.URGENT,
     img: urgentIcon,
     },
     {
-    id: generateHash(4),
+    id: "7Kn!",
     name: PRIORITY.MEDIUM,
     img: mediumIcon,
     },
     {
-    id: generateHash(4),
+    id: "h84K",
     name: PRIORITY.LOW,
     img: lowIcon,
     },

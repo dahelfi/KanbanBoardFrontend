@@ -7,8 +7,7 @@ import {Tab} from "./Tab"
 
 export interface Props{
     tabs: TabType[];
-    selectedTabId: string;
-    liftSelectedTabId: (id: string)=> void;
+  
 }
 
 export const Navbar=(props: Props) => {
@@ -17,14 +16,14 @@ export const Navbar=(props: Props) => {
   return (
    <div className='flex justify-content-start align-items-center flex-column' style={{width: "15vw", maxWidth: "232px", backgroundColor: BLACK, height: "100vh"}}>
     <div className='flex justify-content-center align-items-center' style={{width: "100%", height: "20%", marginBottom: "3rem"}}>
-      <img src={Joinlogo} style={{width: "100px", height: "120px"}}/>
+      <img src={Joinlogo} style={{minWidth: "5vw", minHeight: "8vh"}}/>
     </div>
       <div className='flex align-items-center flex-column justify-content-center' style={{width: "100%"}}>
         {
           props.tabs.map((tab: TabType)=>{
             return(
               <li style={{textDecoration: "none", width: "100%", listStyle: "none"}} key={tab.id}>
-                <Tab id={tab.id} link={tab.link} setSelectedTabId={(id: string)=>props.liftSelectedTabId(id)} selected={tab.id === props.selectedTabId} name={tab.name} img={tab.img} />
+                <Tab id={tab.id} link={tab.link} selected={tab.id === dataContext.selectedTabId} name={tab.name} img={tab.img} />
                 </li>
             )
           })

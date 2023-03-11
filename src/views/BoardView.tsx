@@ -17,12 +17,11 @@ interface Props{
 
 export const BoardView = (props: Props) => {
   const authenticationContext = useContext(Authcontext);
-  const [selectedTabId, setSelectedTabId] = useState<string>("a2f5hT");
   const dataContext = useContext(DataContext);
   let navigate = useNavigate();
 
   useEffect(()=>{
-    navigate(calculateSelectedRoute(tabsArray, selectedTabId));
+    navigate(calculateSelectedRoute(tabsArray, dataContext.selectedTabId));
    
   },[authenticationContext.authToken])
   
@@ -31,7 +30,7 @@ export const BoardView = (props: Props) => {
 
   return (
     <div className='flex' style={{width: "100%", height: "100%", backgroundColor: DIRTYWHITE, }}>
-      <Navbar liftSelectedTabId={(id: string)=>setSelectedTabId(id)} selectedTabId={selectedTabId} tabs={props.tabs}/>
+      <Navbar tabs={props.tabs}/>
       <div className='flex flex-column' style={{width: "90vw"}}>
         <Header/>
         <Outlet/>

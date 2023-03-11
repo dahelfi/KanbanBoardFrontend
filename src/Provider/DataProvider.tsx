@@ -17,11 +17,12 @@ export const DataProvider = (props: PropsWithChildren) => {
   const [visibleTodoDialog, setVisibleTodoDialog] = useState<boolean>(false);
   const [visibleContactDialog, setVisibleContactDialog] = useState<boolean>(false);
   const [currentTodo, setCurrentTodo] = useState<TodoType|undefined>(undefined);
-  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editModeTodo, setEditModeTodo] = useState<boolean>(false);
   const [contacts, setContacts] = useState<ContactType[]>([]);
   const [currentContact, setCurrentContact] = useState<ContactType|undefined>(undefined);
   const [editModeContact, setEditModeContact] = useState<boolean>(true);
-  const [contactsAsMap, setContactsAsMap] = useState<any>()
+  const [contactsAsMap, setContactsAsMap] = useState<any>();
+  const [selectedTabId, setSelectedTabId] = useState<string>("a2f5hT")
   const toast = useRef<any>(undefined); 
   
 useEffect(()=>{
@@ -29,7 +30,6 @@ useEffect(()=>{
     setContactsAsMap(returnContactsArrayAsMap(contacts));
   }
 },[contacts])
-
 
 const showToast = ( severity: string,summary: string,  detail: string,)=>{
   if(toast.current){
@@ -80,7 +80,7 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
   }
 
   const getContactById = (id: number)=>{
-    let contactsMap = new Map(contactsAsMap);
+    let contactsMap = new Map(contactsAsMap);    
     return contactsMap.get(id);
   }
 
@@ -248,8 +248,8 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
     setCurrentTodo({...todo});
   }
 
-  const setEditModeValue = (editModeBoolean: boolean)=>{
-    setEditMode(editModeBoolean);
+  const setEditModeTodoValue = (editModeBoolean: boolean)=>{
+    setEditModeTodo(editModeBoolean);
   }
 
   const setEditModeContactValue = (editModeBoolean: boolean)=>{
@@ -259,19 +259,24 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
   const setCurrentContactValue =(currentContact: ContactType)=>{
     setCurrentContact(currentContact);
   }
+
+  const setSelectedTabIdValue =(selectedId: string)=>{
+    setSelectedTabId(selectedId);
+  }
   
   return (
    <DataContext.Provider value={{todos: todos, deleteTodo: deleteTodo, 
                         getTodosByUser: getTodosByUser, postTodoPerUser: postTodoPerUser, 
                         updateTodo: updateTodo, loading: loading, visibleTodoDialog: visibleTodoDialog, 
                         setVisibleTodoDialog: setVisibleTodoValue, currentTodo: currentTodo, setCurrentTodo: 
-                        setCurrentTodoValue, editMode: editMode, setEditMode: setEditModeValue,
+                        setCurrentTodoValue, editModeTodo: editModeTodo, setEditModeTodo: setEditModeTodoValue,
                         getContactsPerUser: getContactsPerUser, 
                         contacts: contacts, setCurrentContact: setCurrentContactValue, currentContact: currentContact,
                         setVisibleContactDialog: setVisibleContactValue, visibleContactDialog: visibleContactDialog,
                         setEditModeContact: setEditModeContactValue, editModeContact: editModeContact,
                         updateContact: updateContact, postContactPerUser: postContactPerUser, toastRef: toast, 
                         getContactById: getContactById, deleteContact: deleteContact, 
+                        selectedTabId: selectedTabId, setSelectedTabId : setSelectedTabIdValue
                         }}>
         {props.children}
    </DataContext.Provider>

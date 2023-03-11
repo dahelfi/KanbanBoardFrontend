@@ -9,9 +9,10 @@ export interface Props{
 }
 
 export const ContactColorShortcutElement = (props: Props) => {
-  return (
-    <div className={centerItems} style={{height: props.height, width: props.width, color: "white", borderRadius: "100%", backgroundColor: props.contact.color}}>
-        {props.contact.prename.charAt(0)+props.contact.lastname.charAt(0)}
-  </div>
-  )
+    return (
+      <div className={centerItems} style={{height: props.height, width: props.width, color: "white", borderRadius: "100%", backgroundColor: props.contact?.color}}>
+          {props.contact?.prename.charAt(0)+props.contact?.lastname.charAt(0)}
+      </div> 
+    )
+
 }

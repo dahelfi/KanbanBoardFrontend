@@ -14,7 +14,7 @@ export const SignInComponent = () => {
   const [password, setPassword] = useState<string>("");
    
   return (
-    <Card  style={{backgroundColor: BRIGHTWHITE, width: "100%", maxWidth: "500px", height: "100%", maxHeight: "450px", display: "flex", flexDirection: "column", alignItems: "center"}}>
+    <Card style={{backgroundColor: BRIGHTWHITE, width: "100%", maxWidth: "35vw", height: "100%", maxHeight: "50vh", display: "flex", flexDirection: "column", alignItems: "center"}}>
   
         <div className='p-card-title' style={{display: "flex", justifyContent: "center", borderBottom: "2px solid"+ SKYBLUE, marginBottom: "16px"}}>
             <h1>Log in</h1>

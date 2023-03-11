@@ -7,6 +7,6 @@ export const calculateSelectedRoute =(tabs: TabType[], selectedTabId: string)=>{
             returnString = tab.link
         }
     })
-
+        
     return returnString;
 }

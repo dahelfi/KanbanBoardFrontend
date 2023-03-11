@@ -21,8 +21,8 @@ export const DashboardComponentUrgent = () => {
             </div>
         </div>
         <div style={{width: "50%"}} className='flex flex-column justify-content-center align-items-center'>
-            <h2 style={{margin: "0px 0px 0.5rem 0px", fontSize: "25px" }}><b>{date.toLocaleDateString()}</b></h2>
-            <h4 style={{margin: "0.5rem 0px 0px 0px"}}>{urgentElement.textUrgentElement}</h4>
+            {urgentElement.dateLatestUrgentElement !== "No date available" ? <h2 style={{margin: "0px 0px 0.5rem 0px", fontSize: "25px" }}><b>{date.toLocaleDateString()}</b></h2>:null}
+            <h4 style={{margin: "0.5rem 0px 0px 0px", textAlign: "center"}}>{urgentElement.textUrgentElement}</h4>
         </div>
 
    </div>

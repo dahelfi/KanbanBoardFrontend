@@ -1,3 +1,4 @@
+import { DAYTIME } from "../types/DayTime";
 import { DEVELOPMENTSTATE } from "../types/DevelopmentState";
 import { PRIORITY } from "../types/PriorityEnum";
 import { TodoType } from "../types/TodoType";
@@ -25,7 +26,6 @@ export const calculateLatestUrgentTodo = (todosArray: TodoType[])=>{
         let smallestDate: number = parseInt(filteredUrgentArray[0].expire_date.toString());
        filteredUrgentArray.forEach((urgentElement: any, index: number)=>{
         
-        
             if(smallestDate > parseInt(urgentElement.expire_date)){
                 smallestDate = parseInt(urgentElement.expire_date);
             }
@@ -49,4 +49,16 @@ const filterUrgentelementsFromArray = (todosArray: TodoType[])=>{
     })
 
     return temporaryArray;
+}
+
+export const calculateWelcomeText = (date: number)=>{
+    if(date > 0 && date < 6){
+        return DAYTIME.NIGHT;
+    }else if(date > 6 && date <11){
+        return DAYTIME.MORNING;
+    }else if(date > 11 && date < 18){
+        return DAYTIME.MIDDAY
+    }else{
+        return DAYTIME.EVENING;
+    }
 }

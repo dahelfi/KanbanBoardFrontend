@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 import {  parseContactsToDropdownFormat, returnIdArrayOfSelectedContacts } from '../utils/parseContacts';
 import { ContactType } from '../types/ContactType';
 import { AddTodoContact } from '../components/AddTodoContact/AddTodoContact';
+import { TodoType } from '../types/TodoType';
+import { PRIORITY } from '../types/PriorityEnum';
 
 export const AddTaskView = () => {
   let navigate = useNavigate();
@@ -41,6 +43,35 @@ export const AddTaskView = () => {
     dataContext.getContactsPerUser();
   },[])
 
+  useEffect(()=>{
+    if(dataContext.editModeTodo){
+      setTitle(dataContext.currentTodo.name);
+      setDescription(dataContext.currentTodo.description);
+      setCategories(dataContext.currentTodo.category);
+      setDate(new Date(parseInt(dataContext.currentTodo.date)));
+      setSelectedContacts([...returnContactObjectArray(dataContext.currentTodo.contacts)]);
+      setPriorityIdByPriorityString(dataContext.currentTodo.priority)
+    }
+
+  },[dataContext.editModeTodo])
+
+const setPriorityIdByPriorityString =(priorityString: PRIORITY)=>{
+    priorityButtonArray.forEach((priorityElement: any)=>{
+      if(priorityElement.name === priorityString){
+        setSelectedPriorityEnumId(priorityElement.id);
+      }
+    })
+}
+  
+const returnContactObjectArray =(contacts: number[])=>{
+  let contactArray: ContactType[] = [];
+  contacts.forEach((contactId: number)=>{
+   let contact: ContactType = dataContext.getContactById(contactId);
+   contactArray.push(contact);
+  })
+  
+  return contactArray;
+} 
 
  const calculateColorForCategory = (category: string)=>{
     if(category === "BUSINESS"){
@@ -51,6 +82,7 @@ export const AddTaskView = () => {
       return PINK;
     }
   }
+
 
   const deleteContactFromSelectedContacts =(contact: ContactType)=>{
     let temporaryArray: ContactType[] = [...selectedContacts];
@@ -107,10 +139,25 @@ const returnPriorityValue=()=>{
   return returnValue;
 }
 
+const resetInputfields =()=>{
+  setDate(null);
+  setTitle("");
+  setDescription("")
+  setCategories(undefined);
+  setSelectedPriorityEnumId(undefined);
+  setSelectedContact(undefined);
+  setSelectedContacts([]);
+}
+
 const postTodo = ()=>{
-  console.log("date: ", date.getTime());
-  
-  let todo = {
+
+if(dataContext.editModeTodo){
+  let updateTodo ={
+
+  }
+
+}else{
+  let newtodo = {
     name: title,
     description: description,
     created_at: (new Date().getTime()).toString(),
@@ -121,7 +168,10 @@ const postTodo = ()=>{
     contacts: returnIdArrayOfSelectedContacts(selectedContacts)
   }
 
-  dataContext.postTodoPerUser(todo);
+  dataContext.postTodoPerUser(newtodo);
+} 
+
+resetInputfields();
 }
 
   return (
@@ -135,7 +185,7 @@ const postTodo = ()=>{
     </div>: null}
     <div className={centerItems} style={{width: "100%", height: "100%"}}>
       <div style={{width: "85%", height: "90%"}} className="flex flex-column">
-        <h1>Add Task</h1>
+        <h1>{dataContext.editModeTodo ?  "Edit Task": "Add Task"}</h1>
         <div className='flex' style={{width: "100%", height: "100%"}}>
               <div className="flex flex-column align-items-center" style={{width: "50%", height: "100%", borderRight: "1px solid #cdcdcd"}}>
                 <div>
@@ -179,8 +229,8 @@ const postTodo = ()=>{
                   </div>
                     <div className="flex justify-content-center" style={{width: "25vw"}}>
                         <Button style={{marginRight: "8px", backgroundColor: DIRTYWHITE, color: "black", border: "1px solid black"}}>Clear</Button>
-                        <Button disabled={!(title.length > 3 && description.length > 3 && categories !== undefined && date !== null && selectedPriorityEnumId !== undefined)} 
-                        onClick={postTodo} style={{marginLeft: "8px", backgroundColor: BLACK, border: "1px solid"+ BLACK}}>Create</Button>
+                        <Button 
+                        onClick={postTodo} style={{marginLeft: "8px", backgroundColor: BLACK, border: "1px solid"+ BLACK}}>{dataContext.editModeTodo ? "Update": "Create"}</Button>
                     </div>
             
                 </div>
