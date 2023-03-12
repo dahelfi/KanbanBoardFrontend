@@ -52,11 +52,12 @@ const filterUrgentelementsFromArray = (todosArray: TodoType[])=>{
 }
 
 export const calculateWelcomeText = (date: number)=>{
+    
     if(date > 0 && date < 6){
         return DAYTIME.NIGHT;
-    }else if(date > 6 && date <11){
+    }else if(date >= 6 && date <11){
         return DAYTIME.MORNING;
-    }else if(date > 11 && date < 18){
+    }else if(date >= 11 && date < 18){
         return DAYTIME.MIDDAY
     }else{
         return DAYTIME.EVENING;

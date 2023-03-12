@@ -14,7 +14,6 @@ export const SummaryView = () => {
   const dataContext = useContext(DataContext);
   const authContext = useContext(Authcontext);
   let date = new Date().getHours();
-  console.log("date: ", date);
   
 
   let dashboardElementsArray = [{

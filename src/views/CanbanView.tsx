@@ -52,7 +52,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
       <ProgressSpinner/>
       </div>
     </div>: null}
-    <div  className='flex flex-column' style={{width: "100%", height: "100%"}}>
+    <div className='flex flex-column' style={{width: "100%", height: "100%"}}>
           <div className='flex justify-content-between' style={{padding: "2rem 0px 0px 3rem"}}>
             <h1 style={{fontSize: "55px", margin: "0px"}}>Board</h1>
             <div className='flex align-items-center' style={{paddingRight: "5rem"}}> 
@@ -70,7 +70,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
               <div style={{width: "80%"}} className='flex justify-content-start'>
                 <h2>TODO</h2>
               </div>
-              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll"}}>
+              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll", width: "100%"}}>
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.TODO){
                   return(
@@ -84,7 +84,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
             <div style={{width: "80%"}} className='flex justify-content-start'>
               <h2>IN PROGRESS</h2>
               </div>
-              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll"}}>
+              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll", width: "100%"}}>
 
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.INPROGRESS){
@@ -99,7 +99,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
               <div style={{width: "80%"}} className='flex justify-content-start'>
                 <h2>FEEDBACK</h2>
               </div>
-              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll"}}>
+              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll", width: "100%"}}>
 
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.FEEDBACK){
@@ -114,7 +114,7 @@ const onDragTodo = (development_state: DEVELOPMENTSTATE) =>{
               <div style={{width: "80%"}} className='flex justify-content-start'>
                 <h2>DONE</h2>
               </div>
-              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll"}}>
+              <div className='flex flex-column align-items-center' style={{ maxHeight: "70vh", overflowY: "scroll", width: "100%"}}>
 
               {dataContext.todos.filter((todo:any) => findSearchedElement(todo, searchValue)).map((todo: any)=>{
                 if(todo.development_state === DEVELOPMENTSTATE.DONE){

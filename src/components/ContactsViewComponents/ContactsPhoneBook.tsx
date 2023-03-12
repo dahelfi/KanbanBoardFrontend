@@ -18,7 +18,7 @@ export const ContactsPhoneBook = () => {
   
   return (
     twoDimensionalArray.length > 0 ?
-      <div style={{width: "35%", padding: "0rem 2rem 0.5rem 2rem ", overflowY: "scroll", height: "92vh", backgroundColor: "white",}}>
+      <div style={{width: "35%", padding: "0rem 2rem 1.5rem 2rem ", overflowY: "scroll", height: "92vh", backgroundColor: "white",}}>
         {twoDimensionalArray.map((contactElementArray: ContactType[])=>{
         return(
           <ContactPhoneArray contactArray={contactElementArray} />

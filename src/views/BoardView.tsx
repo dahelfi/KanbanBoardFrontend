@@ -25,8 +25,6 @@ export const BoardView = (props: Props) => {
    
   },[authenticationContext.authToken])
   
-  
-
 
   return (
     <div className='flex' style={{width: "100%", height: "100%", backgroundColor: DIRTYWHITE, }}>

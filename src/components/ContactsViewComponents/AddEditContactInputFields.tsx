@@ -27,7 +27,7 @@ export const AddEditContactInputFields = () => {
   },[dataContext.editModeContact])
 
   if(dataContext.editModeContact){
-    logoElement = <div className={centerItems} style={{width: "120px", height: "120px", backgroundColor: dataContext.currentContact.color, borderRadius: "100%"}}><h1 style={{color: "white", fontSize: "40px"}}>{dataContext.currentContact.prename.charAt(0) + dataContext.currentContact.lastname.charAt(0)}</h1></div>
+    logoElement = <div className={centerItems} style={{width: "120px", height: "120px", backgroundColor: dataContext.currentContact?.color, borderRadius: "100%"}}><h1 style={{color: "white", fontSize: "40px"}}>{dataContext.currentContact?.prename.charAt(0) + dataContext.currentContact?.lastname.charAt(0)}</h1></div>
   }else{
     logoElement = <div className={centerItems} style={{width: "120px", height: "120px", backgroundColor: LIGHTGREY, borderRadius: "100%"}}><i style={{color: "white", fontSize: "40px"}} className="pi pi-user"/></div>
   }
@@ -48,7 +48,7 @@ export const AddEditContactInputFields = () => {
         prename: prename,
         email: email,
         phonenumber: phonenumber,
-        color: dataContext.currentContact.color
+        color: dataContext.currentContact?.color
       }
       dataContext.updateContact(updateContact);
 
@@ -100,7 +100,7 @@ export const AddEditContactInputFields = () => {
         <div className='flex justify-content-start' style={{width: "100%"}}>
        
         <Button onClick={()=> dataContext.setVisibleContactDialog(false)} className='font-normal' style={{backgroundColor: "white", color: "black", marginRight: "8px"}} label="Cancel" icon="pi pi-times" iconPos="right"/>
-        <Button disabled={(prename.length < 1 && lastname.length < 1 && email.length < 1 && phonenumber.length < 1)} onClick={()=>createOrEditContact()} style={{backgroundColor: BLACK,  marginLeft: "8px"}} label={dataContext.editModeContact ? "Edit Contact" : "Create Contact"} icon={dataContext.editModeContact ? "pi pi-pencil" : "pi pi-check"} iconPos="right"/>
+        <Button disabled={(prename.length < 1 || lastname.length < 1 || email.length < 1 || phonenumber.length < 1)} onClick={()=>createOrEditContact()} style={{backgroundColor: BLACK,  marginLeft: "8px"}} label={dataContext.editModeContact ? "Edit Contact" : "Create Contact"} icon={dataContext.editModeContact ? "pi pi-pencil" : "pi pi-check"} iconPos="right"/>
       </div>
       </div>
 

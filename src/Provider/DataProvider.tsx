@@ -6,6 +6,7 @@ import { ContactType } from '../types/ContactType';
 import { createSortedArrayFromContactArray } from '../utils/createSortedArrayFromContactArray';
 import { returnContactsArrayAsMap } from '../utils/parseContacts';
 import { devBASEURL, prodBASEURL } from '../constants';
+import { ToastInformationobjectType } from '../types/toastInformationObject';
 
 export const DataContext = createContext<any|undefined>(undefined)
 
@@ -61,7 +62,6 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
 
   const updateTodo = async(todo: TodoType, showToastBoolean: boolean)=>{
     setLoading({...loading, loading: true})
-    console.log("hier dein todo: ", todo);
     let response = await postDataToServer("PUT", url+ todo.id +"/updateTodo/", todo)
     
     if(response.status === 200 && !showToastBoolean){
@@ -71,11 +71,14 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
 
     }else if(response.status === 200 && showToastBoolean){
       getTodosByUser();
-      setLoading({...loading, loading: false})
-      showToast("success", "Success", "Todo was successfully created");
+      setLoading({...loading, loading: false})      
+      setEditModeTodoValue(false);
+      setCurrentTodoValue(undefined);
+      showToast("success", "Success", "Todo was successfully updated");
     }else{ 
       setLoading({...loading, loading: false})
       console.log("error: ", response);
+      showToast("error", "Error", "Todo was not successfully updated");
     }
   }
 
@@ -211,6 +214,9 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
       setLoading({...loading, loading: false})
       showToast("success", "Success", "Contact successfully updated")
       getContactsPerUser();
+      setVisibleContactValue(false);
+      setCurrentContactValue(undefined);
+
     }else{ 
       console.log("error: ", response);
       setLoading({...loading, loading: false}) 
@@ -235,17 +241,21 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
     return response;
   }
   
+  const triggerToast =(toastInformationObject: ToastInformationobjectType)=>{
+    showToast(toastInformationObject.category, toastInformationObject.header, toastInformationObject.detailMessage)
+  } 
+
   const setVisibleTodoValue = (visiblevalue: boolean)=>{
     
     setVisibleTodoDialog(visiblevalue);
   }
 
-  const setVisibleContactValue = (visiblevalue: boolean)=>{
+  const setVisibleContactValue = (visiblevalue: boolean)=>{    
     setVisibleContactDialog(visiblevalue);
   }
 
-  const setCurrentTodoValue = (todo: TodoType)=>{
-    setCurrentTodo({...todo});
+  const setCurrentTodoValue = (todo: TodoType|undefined)=>{
+    setCurrentTodo(todo);
   }
 
   const setEditModeTodoValue = (editModeBoolean: boolean)=>{
@@ -256,14 +266,20 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
     setEditModeContact(editModeBoolean);
   }
 
-  const setCurrentContactValue =(currentContact: ContactType)=>{
+  const setCurrentContactValue =(currentContact: ContactType|undefined)=>{
     setCurrentContact(currentContact);
   }
 
   const setSelectedTabIdValue =(selectedId: string)=>{
+    disableDialogs()
     setSelectedTabId(selectedId);
   }
   
+  const disableDialogs =()=>{
+    setVisibleContactValue(false);
+    setVisibleTodoValue(false);
+  }
+
   return (
    <DataContext.Provider value={{todos: todos, deleteTodo: deleteTodo, 
                         getTodosByUser: getTodosByUser, postTodoPerUser: postTodoPerUser, 
@@ -276,7 +292,8 @@ const showToast = ( severity: string,summary: string,  detail: string,)=>{
                         setEditModeContact: setEditModeContactValue, editModeContact: editModeContact,
                         updateContact: updateContact, postContactPerUser: postContactPerUser, toastRef: toast, 
                         getContactById: getContactById, deleteContact: deleteContact, 
-                        selectedTabId: selectedTabId, setSelectedTabId : setSelectedTabIdValue
+                        selectedTabId: selectedTabId, setSelectedTabId : setSelectedTabIdValue,
+                        triggerToast: triggerToast,
                         }}>
         {props.children}
    </DataContext.Provider>

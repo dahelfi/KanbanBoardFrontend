@@ -60,7 +60,7 @@ export const ViewTodoAndEditDialog = () => {
               </div>
         </div>
         </div>
-        <div onClick={()=>{dataContext.setSelectedTabId("Hn4!l1"); navigate("/addTask/")}} className={centerItems} style={{width: "64px", height: "64px", backgroundColor: BLACK, position: "absolute", bottom: "2.5rem", right: "2.5rem", borderRadius: "5px", cursor: "pointer"}}>
+        <div onClick={()=>{dataContext.setSelectedTabId("Hn4!l1"); navigate("/addTask/"); dataContext.setEditModeTodo(true) }} className={centerItems} style={{width: "64px", height: "64px", backgroundColor: BLACK, position: "absolute", bottom: "2.5rem", right: "2.5rem", borderRadius: "5px", cursor: "pointer"}}>
         <i style={{color: "white"}} className='pi pi-pencil'/>
         </div>
     </Dialog>

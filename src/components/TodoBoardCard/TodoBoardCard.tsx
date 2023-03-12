@@ -60,7 +60,7 @@ export const TodoBoardCard = (props: Props) => {
                 <div className='flex justify-content-around align-items-center' style={{width: "100%"}}>
                     <CategoryElement fontSize='14px' width='50%' height='100%' category={todo.category}/>
                     <i className='pi pi-pencil' onClick={(e)=>{e.stopPropagation(); dataContext.setEditModeTodo(true); dataContext.setCurrentTodo(props.todo); dataContext.setSelectedTabId("Hn4!l1"); navigate("/addTask/")}}/>
-                    <i className='pi pi-trash' onClick={()=>dataContext.deleteTodo(todo)}/>
+                    <i className='pi pi-trash' onClick={(e)=>{e.stopPropagation();dataContext.deleteTodo(todo)}}/>
                 </div>
                 <div className='flex justify-content-between' style={{width: "95%", margin: "8px 8px 0px 8px"}}>
                     <div style={{margin: "0px 0px 0px 0rem"}}> 

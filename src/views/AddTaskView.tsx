@@ -17,11 +17,13 @@ import { ContactType } from '../types/ContactType';
 import { AddTodoContact } from '../components/AddTodoContact/AddTodoContact';
 import { TodoType } from '../types/TodoType';
 import { PRIORITY } from '../types/PriorityEnum';
+import { ToastInformationobjectType } from '../types/toastInformationObject';
 
 export const AddTaskView = () => {
   let navigate = useNavigate();
   const dataContext = useContext(DataContext)
   const [title, setTitle] = useState<string>("");
+  const [id, setId] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [categories, setCategories] = useState<any>(undefined);
   const [selectedContact, setSelectedContact] = useState<any>(undefined)
@@ -31,10 +33,17 @@ export const AddTaskView = () => {
   const [selectedContacts, setSelectedContacts] = useState<ContactType[]>([]);
 
   useEffect(()=>{
-    if(selectedContact){
+    if(selectedContact && !findIfContactAlreadyExistInContactsArray()){
       let temporaryArray: ContactType[] = [...selectedContacts];
       temporaryArray.push(selectedContact);
       setSelectedContacts([...temporaryArray]);
+    }else if(selectedContact && findIfContactAlreadyExistInContactsArray()){
+      let toastObject: ToastInformationobjectType={
+        category: "error",
+        header: "Error",
+        detailMessage: "please dont select the same person twice"
+      }
+      dataContext.triggerToast(toastObject);
     }
     setSelectedContact(undefined);
   },[selectedContact])
@@ -48,9 +57,10 @@ export const AddTaskView = () => {
       setTitle(dataContext.currentTodo.name);
       setDescription(dataContext.currentTodo.description);
       setCategories(dataContext.currentTodo.category);
-      setDate(new Date(parseInt(dataContext.currentTodo.date)));
+      setDate(new Date(parseInt(dataContext.currentTodo.expire_date)));
       setSelectedContacts([...returnContactObjectArray(dataContext.currentTodo.contacts)]);
       setPriorityIdByPriorityString(dataContext.currentTodo.priority)
+      setId(dataContext.currentTodo.id);
     }
 
   },[dataContext.editModeTodo])
@@ -62,7 +72,16 @@ const setPriorityIdByPriorityString =(priorityString: PRIORITY)=>{
       }
     })
 }
-  
+
+const findIfContactAlreadyExistInContactsArray = ()=>{
+for (let i = 0; i < selectedContacts.length; i++) {
+  if(selectedContacts[i].id === selectedContact.id){
+    return true;
+  }
+ }
+ return false;
+}
+
 const returnContactObjectArray =(contacts: number[])=>{
   let contactArray: ContactType[] = [];
   contacts.forEach((contactId: number)=>{
@@ -82,6 +101,7 @@ const returnContactObjectArray =(contacts: number[])=>{
       return PINK;
     }
   }
+
 
 
   const deleteContactFromSelectedContacts =(contact: ContactType)=>{
@@ -149,12 +169,23 @@ const resetInputfields =()=>{
   setSelectedContacts([]);
 }
 
-const postTodo = ()=>{
 
+const postTodo = ()=>{
 if(dataContext.editModeTodo){
   let updateTodo ={
-
+    id: id,
+    name: title,
+    description: description,
+    created_at: dataContext.currentTodo?.created_at,
+    priority: returnPriorityValue(),
+    category: categories,
+    expire_date: date.getTime(),
+    contacts: returnIdArrayOfSelectedContacts(selectedContacts),
+    development_state: dataContext.currentTodo?.development_state,
   }
+  console.log("hier dein updated todo", updateTodo);
+  
+  dataContext.updateTodo(updateTodo, true);
 
 }else{
   let newtodo = {
@@ -210,7 +241,7 @@ resetInputfields();
                 <div>
                   <div>
                       <h4>Calendar</h4>
-                      <Calendar style={{width: "25vw"}} value={date} onChange={(e) => setDate(e.value)} dateFormat="dd/mm/yy" />
+                      <Calendar minDate={new Date()} style={{width: "25vw"}} value={date} onChange={(e) => {setDate(e.value);}} dateFormat="dd/mm/yy" />
                   </div>
               
                   <div>
@@ -228,8 +259,8 @@ resetInputfields();
                     </div>
                   </div>
                     <div className="flex justify-content-center" style={{width: "25vw"}}>
-                        <Button style={{marginRight: "8px", backgroundColor: DIRTYWHITE, color: "black", border: "1px solid black"}}>Clear</Button>
-                        <Button 
+                        <Button onClick={()=>{dataContext.setEditModeTodo(false); dataContext.setCurrentContact(undefined); resetInputfields();}} style={{marginRight: "8px", backgroundColor: DIRTYWHITE, color: "black", border: "1px solid black"}}>Clear</Button>
+                        <Button disabled={title.length < 1 || description.length < 1 || selectedPriorityEnumId === undefined || date === null || categories === undefined }
                         onClick={postTodo} style={{marginLeft: "8px", backgroundColor: BLACK, border: "1px solid"+ BLACK}}>{dataContext.editModeTodo ? "Update": "Create"}</Button>
                     </div>
             
