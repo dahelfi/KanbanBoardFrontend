@@ -5,14 +5,13 @@ import { Authcontext } from './AuthProvider';
 import { ContactType } from '../types/ContactType';
 import { createSortedArrayFromContactArray } from '../utils/createSortedArrayFromContactArray';
 import { returnContactsArrayAsMap } from '../utils/parseContacts';
-import { devBASEURL, prodBASEURL } from '../constants';
 import { ToastInformationobjectType } from '../types/toastInformationObject';
+import { url } from '../constants';
 
 export const DataContext = createContext<any|undefined>(undefined)
 
 export const DataProvider = (props: PropsWithChildren) => {
   const authContext = useContext(Authcontext);
-  const url = prodBASEURL === "" ? devBASEURL : prodBASEURL;
   const [todos, setTodos] = useState<TodoType[]>([]);
   const [loading, setLoading] = useState<any>({loading: false});
   const [visibleTodoDialog, setVisibleTodoDialog] = useState<boolean>(false);

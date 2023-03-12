@@ -19,6 +19,7 @@ export const createSortedArrayFromContactArray =(contactArray: any[])=>{
 
 
 export const createTwoDimensionalArray=(contactArray: ContactType[])=>{
+    
     let twoDimensionalArray: any[] = [];
     let firstLayerArray: ContactType[] = [];
     let firstLetter: string = contactArray[0].prename.charAt(0)
@@ -33,6 +34,7 @@ export const createTwoDimensionalArray=(contactArray: ContactType[])=>{
         }
 
     });
+    twoDimensionalArray.push(firstLayerArray);
 
 return twoDimensionalArray;
     

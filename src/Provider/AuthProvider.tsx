@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import { url } from '../constants';
 
 export const Authcontext = React.createContext<any>(undefined); 
 
@@ -12,7 +13,7 @@ export const AuthProvider = (props: PropsWithChildren) => {
     
     const loginUser =async (username: string, password: string) => {
         
-        let response = await fetch('http://localhost:8000/api/token/',{
+        let response = await fetch(url+'token/',{
             method: "POST",
             headers: {
                 'Content-Type': "application/json"
@@ -34,20 +35,23 @@ export const AuthProvider = (props: PropsWithChildren) => {
 
     useEffect(()=>{
         if(loading.loading){
+            console.log("loading getriggert");
+            
             updateToken();
         }
         let interval = setInterval(()=>{
             if(authToken){
+                console.log("update getriggert");
                 updateToken();
             }  
-        }, 4*60*1000)
+        }, 1*60*1000)
         return ()=> clearInterval(interval)
     },[authToken, loading])
 
     const updateToken =async ()=>{
         console.log("dein updatetoken: ", authToken?.refresh);
         
-        let response = await fetch('http://localhost:8000/api/token/refresh/',{
+        let response = await fetch(url+ 'token/refresh/',{
             method: "POST",
             headers: {
                 'Content-Type': "application/json"
@@ -57,6 +61,8 @@ export const AuthProvider = (props: PropsWithChildren) => {
 
         let data = await response.json();
         if(response.status === 200){
+            console.log("ich wurde korrekt ausgeführt");
+            
             setAuthToken(data);
             setUser(jwtDecode(data.access))
             localStorage.setItem('authTokens', JSON.stringify(data))

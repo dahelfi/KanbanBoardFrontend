@@ -12,5 +12,5 @@ export const ORGANGEMIDDLEURGENT = "#FFA800";
 export const LIGHTGREY = "#D1D1D1";
 
 export const centerItems = "flex align-items-center justify-content-center"
-export const prodBASEURL = "";
-export const devBASEURL = "http://localhost:8000/api/"
+export const url = "https://dahelfi96.pythonanywhere.com/api/"
+// export const url = "http://localhost:8000/api/"
